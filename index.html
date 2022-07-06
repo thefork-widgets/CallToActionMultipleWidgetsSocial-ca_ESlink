@@ -1,23 +1,61 @@
-<!-- Widgets to add *-->
-<center><div class="tab-content"> 
-  <div id="logo"><img src=""></div> <!-- HEADER IMAGE URL - HEADER -->
 
-  <div id="selector">
-    <div id="menu">
-      <ul>
-        <!-- RESTAURANT GROUP - NAME HEADER LIST-->
-        <li class="li-header">La Calle Burger</li>
-        <!-- RESTAURANT NAME - LIST -->
-        <li><a href="https://module.lafourchette.com/es_ES/module/xxxx-xxxx">Can Luis</a></li>
-        <li><a href="https://module.lafourchette.com/es_ES/module/xxxx-xxxxx" target="blank">Chef Gus</a></li>
-      </ul>
-    </div> 
+<!-- Group selector ON/OFF -->
+<script type="text/javascript">
 
-  </div>
+  const prescriptorId = "247477689"; // Promoter Id created in SF
+  const siteUrl = "https://www.desertspringsresort.es/"; // Logo URL
+  const logoUrl = "https://www.desertspringsresort.es/wp-content/themes/desertsprings/dist/images/DSGR-white-logo_small.png"; // Website URL
+  
+  window.onload= restaurantSelectorActive();
 
-</div></center>
 
-<!-- media queries -->
+  
+  function restaurantSelectorActive(){
+    var lang, heading;
+
+    if(window.location.href.search( 'es_ES' )!=-1) {
+          lang = "es_ES";
+          heading = "Dónde quieres reservar"
+    }else{
+          lang = "en_GB";
+          heading = "Where would you like to book";
+    }
+    var message = '<center><div class="tab-content"><div id="logo"><a href="'+ siteUrl +'"><img src="'+ logoUrl +'"></a></div><div id="selector"><div id="menu"><ul><li class="li-header">' + heading + '</li><li><a href="https://module.lafourchette.com/' +lang+ '/module/566185-37a7b">Club Cocodrilo</a></li><li><a href="https://module.lafourchette.com/' +lang+ '/module/565473-62f36">El Torrente</a></li></ul></div></div></div></center>'
+
+    if( (isParameterByName('p') && getParameterByName('p') == prescriptorId) || (isParameterByName('origin') && getParameterByName('origin') == 'facebook' ) ) {
+        $('.wrapper').append(message);
+        console.log("Selector ON");
+        $(".main").hide();
+        $(".tab-content").show();   
+
+    }else{
+        console.log("Selector OFF")
+        $(".tab-content").hide();
+        $(".main").show();
+    }    
+  }
+
+  //https://module.lafourchette.com/en_GB/module/56567-a3fd1?p=247477689
+  //https://module.lafourchette.com/es_ES/module/711156-fa0e5?origin=facebook&utm_medium=integration&utm_source=instagram#/4564704/pdh
+
+  function getParameterByName(name, url=window.location.href) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+  //isParameterByName('origin');
+  // origin > True
+  function isParameterByName(name) {
+    let regex = new RegExp('[?&]' + name + '=');
+    return regex.test(window.location.href);
+  }
+</script>
+
+
+<!-- Selector styles -->
 <style type="text/css">
 
   :root {
@@ -145,57 +183,3 @@
     }
   }
 </style>
-
-<!-- hide catalan widget -->
-<script type="text/javascript">
-  // origin = facebook-instagram
-  var pathName = window.location.pathname;  
-  window.onload= tranlations();
-  $('body').click(tranlations);
-  function tranlations(){
-    if(isParameterByName('origin')){
-        let origin = getParameterByName('origin');
-        if(origin == "facebook" || origin == "instagram" ){ 
-            $(document).ready(function(){
-              console.log("Fuente: "+origin);
-              $(".main, .res-message").hide();
-              $(".tab-content").show();
-            });    
-        
-        }else{
-            console.log("Fuente: 'origin' no existe");
-            $(".tab-content").hide();
-            $(".main, .res-message").show();
-            $("body").css("background", "#fff");
-        }
-   
-    }else if(pathName.search( 'ca_ES' )!=-1){ 
-        // $(document).ready(function(){
-            console.log("Es ca_ES")
-            $(".main").hide();
-            $(".tab-content").show();
-        // });
-    }else{
-        console.log("No es ca_ES")
-        $(".tab-content").hide();
-        $(".main").show();
-    }    
-  }
-
-  //let origin = getParameterByName('origin');https://module.lafourchette.com/es_ES/module/24136-9857c?origin=facebook&utm_medium=integration&utm_source=facebook&fbclid=IwAR10IMOlpfi7gxaOVGrCy5IE1UN-JiDbMlIwt2mwSZq6FBjoY1nesOIf7x0#/128493/pdh
-  // origin > facebook
-  function getParameterByName(name, url=window.location.href) {
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-  //isParameterByName('origin');
-  // origin > True
-  function isParameterByName(name) {
-    let regex = new RegExp('[?&]' + name + '=');
-    return regex.test(window.location.href);
-  }
-</script>
